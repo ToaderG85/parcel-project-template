@@ -22,9 +22,9 @@ const nth = function (d) {
   }
 };
 
-const intervalId = setInterval(() => {
-  const date = new Date();
-  const changeDate = moment(date).utcOffset(oneDayData.timezone / 60);
+function getDateFromInputCity(cityHour, timezone) {
+  const date = new Date(cityHour);
+  const changeDate = moment(date).utcOffset(timezone / 60);
 
   const dayNow = date.getDate();
 
@@ -45,7 +45,7 @@ const intervalId = setInterval(() => {
     pad(changeDate.minutes()) +
     ':' +
     pad(changeDate.seconds());
-}, 1000);
+}
 
 function pad(value) {
   return String(value).padStart(2, '0');
@@ -58,12 +58,12 @@ function addZero(i) {
   return i;
 }
 
-const sunTime = (sunrise, sunset) => {
+const sunTime = (sunrise, sunset, timezone) => {
   const daterise = new Date(sunrise * 1000);
-  const sunrisechange = moment(daterise).utcOffset(oneDayData.timezone / 60);
+  const sunrisechange = moment(daterise).utcOffset(timezone / 60);
 
   const dateset = new Date(sunset * 1000);
-  const sunsetchange = moment(dateset).utcOffset(oneDayData.timezone / 60);
+  const sunsetchange = moment(dateset).utcOffset(timezone / 60);
 
   const sunriseHours = addZero(sunrisechange.hours());
   const sunriseMinutes = addZero(sunrisechange.minutes());
@@ -75,26 +75,4 @@ const sunTime = (sunrise, sunset) => {
 
 let oneDayData = {};
 
-// function renderOneDayWeather(data) {
-//   oneDayData = data.name;
-//   sunTime(oneDayData.sunrise, oneDayData.sunset);
-// }
-function renderOneDayWeather(data) {
-  if (
-    data.hasOwnProperty('name') &&
-    data.hasOwnProperty('sunrise') &&
-    data.hasOwnProperty('sunset') &&
-    data.hasOwnProperty('timezone')
-  ) {
-    oneDayData.name = data.name;
-    oneDayData.sunrise = data.sunrise;
-    oneDayData.sunset = data.sunset;
-    oneDayData.timezone = data.timezone;
-
-    sunTime(oneDayData.sunrise, oneDayData.sunset);
-  } else {
-    console.error('Invalid data object.');
-  }
-}
-
-// export functie care populeaza widget
+export { sunTime, getDateFromInputCity };
