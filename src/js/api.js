@@ -13,20 +13,21 @@ async function getWeather(name) {
   );
   const lat = geoCodingResponse.data[0].lat;
   const lon = geoCodingResponse.data[0].lon;
+  const country = geoCodingResponse.data[0].country;
 
   const weatherResponse = await axios.get(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric`
   );
 
   return weatherResponse.data;
 }
 
 async function getCityImage(name) {
-  console.log(name);
+  
   const imageResponse = await axios.get(
     `https://pixabay.com/api/?key=${backgroundApiKey}&q=${name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=1`
   );
-  console.log(imageResponse.data.hits[getRandomInt(40)].largeImageURL);
+  
   return imageResponse.data.hits[getRandomInt(40)].largeImageURL;
 }
 

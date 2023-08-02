@@ -16,6 +16,11 @@ form.addEventListener('submit', async event => {
   const {
     elements: { search },
   } = event.currentTarget;
+  
+  const data = await getWeather(search.value);
+  updateWidget(data);
+  const backgroundImage = await getCityImage(search.value);
+  addBackgroundImage(backgroundImage);
 
   itemsSearch.push(search.value);
   addLocalStorage(itemsSearch);
@@ -23,18 +28,19 @@ form.addEventListener('submit', async event => {
     sunTime(data.sys.sunrise, data.sys.sunset, data.timezone)
   );
   // setInterval(() => getDateFromInputCity(), 1000);
+
   form.reset();
 });
 
 //! load cand se incarca pagina
 window.addEventListener('load', () => {
   const itemsSearch = getLocalStorage();
-  console.log(itemsSearch);
+  
   // folosesc functia din wiget.js cu ultimul element din localStorage
   // itemsSearch[itemsSearch.length - 1];
 
   if (itemsSearch != null) {
-    console.log(itemsSearch[itemsSearch.length - 1]);
+    
     getCityImage(itemsSearch[itemsSearch.length - 1]).then(data =>
       addBackgroundImage(data)
     );
@@ -42,9 +48,16 @@ window.addEventListener('load', () => {
       sunTime(data.sys.sunrise, data.sys.sunset, data.timezone)
     );
     // setInterval(() => getDateFromInputCity(data.timezone), 1000);
+      addBackgroundImage(data));
+
+    getWeather(itemsSearch[itemsSearch.length - 1]).then(data =>
+      updateWidget(data));
+
     // folosesc functia din wiget.js cu ultimul element din localStorage
   } else {
-    getCityImage('Bucharest').then(data => addBackgroundImage(data));
+    
+    getCityImage('Cluj').then(data => addBackgroundImage(data));
+    getWeather('Cluj').then(data => updateWidget(data));
     // wiget.js cu un oras random
   }
 });
