@@ -25,14 +25,15 @@
   margin-left: auto;
   padding-top: 27px;
   text-align: right;
-  color: #ffffff;
 
   @media screen and (min-width: 768px) {
     max-width: 680px;
+    color: white;
     margin-top: 60px;
   }
 }
 .quote-phrase {
+  color: white;
   font-size: 14px;
   font-weight: 400;
   font-style: italic;
@@ -40,10 +41,12 @@
   margin-bottom: 8px;
   @media screen and (min-width: 768px) {
     font-size: 22px;
+    color: white;
     margin-bottom: 20px;
   }
 }
 .quote-author {
+  color: white;
   font-size: 18px;
   font-weight: 400;
   line-height: 1.2;
@@ -52,5 +55,6 @@
   justify-content: end;
   @media screen and (min-width: 480px) {
     margin-bottom: 40px;
+    color: white;
   }
 }

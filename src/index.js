@@ -5,6 +5,7 @@ import './js/citat';
 import { getCityImage, getWeather } from './js/api';
 import { getLocalStorage, addLocalStorage } from './js/utils';
 import { addBackgroundImage, updateWidget } from './js/widget';
+import { sunTime, setInterval } from './js/time';
 
 const form = document.querySelector('.form');
 let itemsSearch = [];
@@ -18,9 +19,10 @@ form.addEventListener('submit', async event => {
 
   itemsSearch.push(search.value);
   addLocalStorage(itemsSearch);
-
-  // folosesc functia din wighet js
-
+  getWeather(search.value).then(data =>
+    sunTime(data.sys.sunrise, data.sys.sunset, data.timezone)
+  );
+  // setInterval(() => getDateFromInputCity(), 1000);
   form.reset();
 });
 
@@ -36,7 +38,10 @@ window.addEventListener('load', () => {
     getCityImage(itemsSearch[itemsSearch.length - 1]).then(data =>
       addBackgroundImage(data)
     );
-
+    getWeather(itemsSearch[itemsSearch.length - 1]).then(data =>
+      sunTime(data.sys.sunrise, data.sys.sunset, data.timezone)
+    );
+    // setInterval(() => getDateFromInputCity(data.timezone), 1000);
     // folosesc functia din wiget.js cu ultimul element din localStorage
   } else {
     getCityImage('Bucharest').then(data => addBackgroundImage(data));
