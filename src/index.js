@@ -5,7 +5,12 @@ import './js/citat';
 import { getCityImage, getWeather } from './js/api';
 import { getLocalStorage, addLocalStorage } from './js/utils';
 import { addBackgroundImage, updateWidget } from './js/widget';
-import { sunTime } from './js/time';
+import {
+  sunTime,
+  updateTimeForSearchedCity,
+  intervalId,
+  setInterval,
+} from './js/time';
 
 const form = document.querySelector('.form');
 let itemsSearch = [];
@@ -28,7 +33,13 @@ form.addEventListener('submit', async event => {
   getWeather(search.value).then(data =>
     sunTime(data.city.sunrise, data.city.sunset, data.city.timezone)
   );
-  // setInterval(() => getDateFromInputCity(), 1000);
+  // Functie care  modifica ora dupa orasul cautat
+  // clearInterval(intervalId);
+  const cityIntervalId = setInterval(() => {
+    updateTimeForSearchedCity(data.city.sunrise, data.city.timezone);
+  }, 1000);
+  // setInterval(() => updateTimeForSearchedCity(data.city.timezone), 1000);
+  clearInterval(intervalId);
   form.reset();
 });
 
@@ -47,10 +58,10 @@ window.addEventListener('load', () => {
     getWeather(itemsSearch[itemsSearch.length - 1]).then(data =>
       updateWidget(data)
     );
-    getWeather(itemsSearch[itemsSearch.length - 1]).then(
-      // data => console.log(data)
-      sunTime(data.city.sunrise, data.city.sunset, data.city.timezone)
-    );
+    // getWeather(itemsSearch[itemsSearch.length - 1]).then(
+    //   // data => console.log(data)
+    //   sunTime(data.city.sunrise, data.city.sunset, data.city.timezone)
+    // );
     // setInterval(() => getDateFromInputCity(data.timezone), 1000);
 
     // folosesc functia din wiget.js cu ultimul element din localStorage
@@ -58,7 +69,7 @@ window.addEventListener('load', () => {
     getCityImage('Cluj').then(data => addBackgroundImage(data));
     getWeather('Cluj').then(data => updateWidget(data));
     getWeather('Cluj').then(data =>
-      sunTime(data.sys.sunrise, data.sys.sunset, data.timezone)
+      sunTime(data.city.sunrise, data.city.sunset, data.city.timezone)
     );
     // wiget.js cu un oras random
   }

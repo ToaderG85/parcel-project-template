@@ -5,8 +5,8 @@ const timeRef = document.querySelector('.hour');
 const sunriseTime = document.querySelector('.sunrise-time');
 const sunsetTime = document.querySelector('.sunset-time');
 
-var moment = require('moment-timezone');
-moment().tz('America/Los_Angeles').format();
+// var moment = require('moment-timezone');
+// moment().tz('America/Los_Angeles').format();
 
 const nth = function (d) {
   if (d > 3 && d < 21) return 'th';
@@ -21,18 +21,31 @@ const nth = function (d) {
       return 'th';
   }
 };
-// function getDateFromInputCity(cityHour, timezone) {
-//   const date = new Date(cityHour);
-//   const changeDate = moment(date).utcOffset(timezone / 60);
+const oneDayData = {
+  timezone: -new Date().getTimezoneOffset(),
+};
+
+function updateTimeForSearchedCity(cityHour, timezone) {
+  const date = new Date(cityHour);
+  const changeDate = moment(date).utcOffset(timezone / 60);
+
+  timeRef.textContent =
+    pad(changeDate.hours()) +
+    ':' +
+    pad(changeDate.minutes()) +
+    ':' +
+    pad(changeDate.seconds());
+}
+
 const intervalId = setInterval(() => {
   const date = new Date();
   const changeDate = moment(date).utcOffset(oneDayData.timezone / 60);
 
   const dayNow = date.getDate();
 
-  const weekDayNow = new Intl.DateTimeFormat('en', { weekday: 'short' }).format(
-    date
-  );
+  const weekDayNow = new Intl.DateTimeFormat('en', {
+    weekday: 'short',
+  }).format(date);
 
   dayRef.innerHTML = `${dayNow}<sup class="date__day--nth">${nth(
     dayNow
@@ -75,7 +88,5 @@ const sunTime = (sunrise, sunset, timezone) => {
   sunsetTime.textContent = sunsetHours + ':' + sunsetMinutes;
 };
 
-let oneDayData = {};
-
 // export functie care populeaza widget
-export { sunTime };
+export { sunTime, updateTimeForSearchedCity, intervalId, setInterval };
