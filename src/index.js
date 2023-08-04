@@ -13,12 +13,14 @@ import { addBackgroundImage, updateWidget } from './js/widget';
 import { createChart } from './js/chart';
 
 import { createCityElement } from './js/searchBar';
-import { sunTime } from './js/time';
+import { sunTime, updateTime, setInterval } from './js/time';
 
 const form = document.querySelector('.form');
 const cityContainer = document.querySelector('.slider');
 
 let itemsSearch = [];
+let cityIntervalId;
+let data;
 
 //! form aici (eventListener)
 form.addEventListener('submit', async event => {
@@ -26,8 +28,9 @@ form.addEventListener('submit', async event => {
   const {
     elements: { search },
   } = event.currentTarget;
-
-  const data = await getWeather(search.value);
+  data = await getWeather(search.value);
+  // console.log(data);
+  // const data = await getWeather(search.value);
   updateWidget(data);
   const backgroundImage = await getCityImage(search.value);
   addBackgroundImage(backgroundImage);
@@ -43,10 +46,15 @@ form.addEventListener('submit', async event => {
     sunTime(data.city.sunrise, data.city.sunset, data.city.timezone);
   });
   // functie care face update la ora
-  // clearInterval(intervalId);
-  // const cityIntervalId = setInterval(() => {
-  //   updateTime(data.city.sunrise, data.city.timezone);
-  // }, 1000);
+  if (cityIntervalId) {
+    clearInterval(cityIntervalId);
+  }
+  cityIntervalId = setInterval(() => {
+    // console.log('Updating time...');
+    updateTime(data.city.sunrise, data.city.timezone);
+    // console.log('data.city.sunrise:', data.city.sunrise);
+    // console.log('data.city.timezone:', data.city.timezone);
+  }, 1000);
 
   form.reset();
 });
@@ -68,8 +76,6 @@ window.addEventListener('load', () => {
       sunTime(data.city.sunrise, data.city.sunset, data.city.timezone);
     });
 
-    // setInterval(() => getDateFromInputCity(data.timezone), 1000);
-
     // createCityElement(itemsSearch);
     itemsSearch.map(data => createCityElement(data.id, data.city));
     // folosesc functia din wiget.js cu ultimul element din localStorage
@@ -78,7 +84,7 @@ window.addEventListener('load', () => {
     getWeather('Cluj').then(data => {
       updateWidget(data);
       createChart(data);
-      sunTime(data.city.sunrise, data.city.sunset, data.city.timezone);
+      // sunTime(data.city.sunrise, data.city.sunset, data.city.timezone);
     });
   }
 });
