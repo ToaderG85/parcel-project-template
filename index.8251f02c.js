@@ -20,5 +20,5 @@ ln.addEventListener("submit",(async M=>{M.preventDefault();const{elements:{searc
 //! load cand se incarca pagina
 window.addEventListener("load",(()=>{un=null===rn()?[]:rn(),0!==un.length?(qn(un[un.length-1].city).then((M=>c(M))),an(un[un.length-1].city).then((M=>{t(M),l(M.city.sunrise,M.city.sunset,M.city.timezone)})),un.map((M=>Wn(M.id,M.city)))):(qn("Cluj").then((M=>c(M))),an("Cluj").then((M=>{t(M),Mc(M),l(M.city.sunrise,M.city.sunset,M.city.timezone)})))})),
 //! incarca orasul cand apesi pe cityDiv
-fn.addEventListener("click",(async M=>{console.log(M.target.tagName);const b=M.target.parentElement.dataset.id;if("BUTTON"===M.target.tagName&&(un=un.filter((M=>+M.id!=+b)),sn(b),M.target.parentElement.remove()),"H2"===M.target.tagName){const b=M.target.innerText;t(await an(b));c(await qn(b))}}));
-//# sourceMappingURL=index.859789fa.js.map
+fn.addEventListener("click",(async M=>{const b=M.target.parentElement.dataset.id;if("BUTTON"===M.target.tagName&&(un=un.filter((M=>+M.id!=+b)),sn(b),M.target.parentElement.remove()),"H2"===M.target.tagName){const b=M.target.innerText;t(await an(b));c(await qn(b))}}));
+//# sourceMappingURL=index.8251f02c.js.map
