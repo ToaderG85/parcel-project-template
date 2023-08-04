@@ -18,7 +18,7 @@ function u(M){return M+.5|0}!function(){const M=document.querySelector(".quote-p
 //! form aici (eventListener)
 fn.addEventListener("submit",(async M=>{M.preventDefault();const{elements:{search:b}}=M.currentTarget;t(await qn(b.value));c(await rn(b.value));const z={id:Date.now(),city:b.value};var p;hn.push(z),p=hn,localStorage.setItem("wordLocalStorage",JSON.stringify(p)),ln(z.id,z.city),qn(b.value).then((M=>{bc(M),l(M.city.sunrise,M.city.sunset,M.city.timezone)})),fn.reset()})),
 //! load cand se incarca pagina
-window.addEventListener("load",(()=>{hn=null===sn()?[]:sn(),0!==hn.length?(rn(hn[hn.length-1].city).then((M=>c(M))),qn(hn[hn.length-1].city).then((M=>{t(M),l(M.city.sunrise,M.city.sunset,M.city.timezone)})),hn.map((M=>ln(M.id,M.city)))):(rn("Cluj").then((M=>c(M))),qn("Cluj").then((M=>{t(M),bc(M),l(M.city.sunrise,M.city.sunset,M.city.timezone)})))})),
+window.addEventListener("load",(()=>{hn=null===sn()?[]:sn(),0!==hn.length?(rn(hn[hn.length-1].city).then((M=>c(M))),qn(hn[hn.length-1].city).then((M=>{t(M),bc(M),l(M.city.sunrise,M.city.sunset,M.city.timezone)})),hn.map((M=>ln(M.id,M.city)))):(rn("Cluj").then((M=>c(M))),qn("Cluj").then((M=>{t(M),bc(M),l(M.city.sunrise,M.city.sunset,M.city.timezone)})))})),
 //! incarca orasul cand apesi pe cityDiv
 un.addEventListener("click",(async M=>{const b=M.target.parentElement.dataset.id;if("BUTTON"===M.target.tagName&&(hn=hn.filter((M=>+M.id!=+b)),dn(b),M.target.parentElement.remove()),"H2"===M.target.tagName){const b=M.target.innerText;t(await qn(b));c(await rn(b))}}));
-//# sourceMappingURL=index.8e023751.js.map
+//# sourceMappingURL=index.dfb00e73.js.map
