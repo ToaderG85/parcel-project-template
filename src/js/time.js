@@ -6,30 +6,23 @@ const timeRef = document.querySelector('.hour');
 const sunriseTime = document.querySelector('.sunrise-time');
 const sunsetTime = document.querySelector('.sunset-time');
 
-let oneDayData = { timezone: -new Date().getTimezoneOffset() };
-// let oneDayData = {};
-// // functie care face update la ora
-// function updateTime(cityHour, timezone) {
-//   const date = new Date(cityHour);
-//   const changeDate = moment(date).utcOffset(timezone / 60);
+let oneDayData = { timezone: new Date().getTimezoneOffset() };
 
-//   timeRef.textContent =
-//     pad(changeDate.hours()) +
-//     ':' +
-//     pad(changeDate.minutes()) +
-//     ':' +
-//     pad(changeDate.seconds());
-// }
-const intervalId = setInterval(() => {
+const intervalTime = timezone => {
   const date = new Date();
-  // let oneDayData = { timezone: -new Date().getTimezoneOffset() };
+  let hour = new Date().getTime() + timezone * 1000; // Convertim la milisecunde
+  const newHour = new Date(hour);
+  let hourOfTheDay = newHour.getUTCHours();
+  let minutes = newHour.getUTCMinutes();
+  let seconds = newHour.getUTCSeconds();
+
   const changeDate = moment(date).utcOffset(oneDayData.timezone / 60);
 
   const dayNow = date.getDate();
 
-  const weekDayNow = new Intl.DateTimeFormat('en', { weekday: 'short' }).format(
-    date
-  );
+  const weekDayNow = new Intl.DateTimeFormat('en', {
+    weekday: 'short',
+  }).format(date);
 
   dayRef.innerHTML = `${dayNow}<sup class="date__day--nth">${nth(
     dayNow
@@ -38,13 +31,11 @@ const intervalId = setInterval(() => {
   monthRef.textContent = new Intl.DateTimeFormat('en', {
     month: 'long',
   }).format(date);
-  timeRef.textContent =
-    pad(changeDate.hours()) +
-    ':' +
-    pad(changeDate.minutes()) +
-    ':' +
-    pad(changeDate.seconds());
-}, 1000);
+
+  timeRef.textContent = `${addZero(hourOfTheDay)}:${addZero(minutes)}:${addZero(
+    seconds
+  )} `;
+};
 
 function pad(value) {
   return String(value).padStart(2, '0');
@@ -86,4 +77,7 @@ const sunTime = (sunrise, sunset, timezone) => {
 };
 
 // export functie care populeaza widget
-export { sunTime };
+
+export { sunTime, intervalTime };
+
+
