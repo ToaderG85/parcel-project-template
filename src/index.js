@@ -2,6 +2,12 @@ import './js/widget';
 import './js/time';
 import './js/citat';
 import './js/chart';
+import './js/fivedays';
+import './js/ref';
+import './js/active-btn-fivedays-card';
+import './js/moreinfo';
+import './js/more-info-scroll-btn';
+import './js/five-days-scroll-btn';
 
 import { getCityImage, getWeather } from './js/api';
 import {
@@ -51,10 +57,12 @@ form.addEventListener('submit', async event => {
 
   createCityElement(citySearch.id, citySearch.city);
 
+
   clearInterval(timerOnload);
   timerOnload = setInterval(() => {
     intervalTime(data.city.timezone);
   }, 1000);
+
 
   form.reset();
 });
