@@ -6,7 +6,7 @@ const timeRef = document.querySelector('.hour');
 const sunriseTime = document.querySelector('.sunrise-time');
 const sunsetTime = document.querySelector('.sunset-time');
 
-let oneDayData = { timezone: -new Date().getTimezoneOffset() };
+let oneDayData = { timezone: new Date().getTimezoneOffset() };
 // let oneDayData = {};
 // // functie care face update la ora
 // function updateTime(cityHour, timezone) {
@@ -20,8 +20,15 @@ let oneDayData = { timezone: -new Date().getTimezoneOffset() };
 //     ':' +
 //     pad(changeDate.seconds());
 // }
-const intervalId = setInterval(() => {
+
+const intervalTime = timezone => {
   const date = new Date();
+  let hour = new Date().getTime() + timezone * 1000; // Convertim la milisecunde
+  const newHour = new Date(hour);
+  let hourOfTheDay = newHour.getUTCHours();
+  let minutes = newHour.getUTCMinutes();
+  let seconds = newHour.getUTCSeconds();
+
   // let oneDayData = { timezone: -new Date().getTimezoneOffset() };
   const changeDate = moment(date).utcOffset(oneDayData.timezone / 60);
 
@@ -38,13 +45,9 @@ const intervalId = setInterval(() => {
   monthRef.textContent = new Intl.DateTimeFormat('en', {
     month: 'long',
   }).format(date);
-  timeRef.textContent =
-    pad(changeDate.hours()) +
-    ':' +
-    pad(changeDate.minutes()) +
-    ':' +
-    pad(changeDate.seconds());
-}, 1000);
+
+  timeRef.textContent = `${hourOfTheDay}:${minutes}:${seconds} `;
+};
 
 function pad(value) {
   return String(value).padStart(2, '0');
@@ -86,4 +89,4 @@ const sunTime = (sunrise, sunset, timezone) => {
 };
 
 // export functie care populeaza widget
-export { sunTime};
+export { sunTime, intervalTime };
