@@ -13,11 +13,12 @@ import { addBackgroundImage, updateWidget } from './js/widget';
 import { createChart } from './js/chart';
 
 import { createCityElement } from './js/searchBar';
-import { sunTime } from './js/time';
+import { sunTime, intervalTime } from './js/time';
 
 const form = document.querySelector('.form');
 const cityContainer = document.querySelector('.slider');
 
+let timerOnload = null;
 let itemsSearch = [];
 
 //! form aici (eventListener)
@@ -39,15 +40,13 @@ form.addEventListener('submit', async event => {
 
   createCityElement(citySearch.id, citySearch.city);
   getWeather(search.value).then(data => {
-    // console.log(data);
     createChart(data);
     sunTime(data.city.sunrise, data.city.sunset, data.city.timezone);
   });
-  // functie care face update la ora
-  // clearInterval(intervalId);
-  // const cityIntervalId = setInterval(() => {
-  //   updateTime(data.list.dt);
-  // }, 1000);
+  clearInterval(timerOnload);
+  timerOnload = setInterval(() => {
+    intervalTime(data.city.timezone);
+  }, 1000);
 
   form.reset();
 });
@@ -67,9 +66,10 @@ window.addEventListener('load', () => {
     getWeather(itemsSearch[itemsSearch.length - 1].city).then(data => {
       updateWidget(data);
       sunTime(data.city.sunrise, data.city.sunset, data.city.timezone);
+      timerOnload = setInterval(() => {
+        intervalTime(data.city.timezone);
+      }, 1000);
     });
-
-    // setInterval(() => getDateFromInputCity(data.timezone), 1000);
 
     // createCityElement(itemsSearch);
     itemsSearch.map(data => createCityElement(data.id, data.city));
@@ -80,6 +80,9 @@ window.addEventListener('load', () => {
       updateWidget(data);
       createChart(data);
       sunTime(data.city.sunrise, data.city.sunset, data.city.timezone);
+      timerOnload = setInterval(() => {
+        intervalTime(data.city.timezone);
+      }, 1000);
     });
   }
 });
@@ -95,7 +98,14 @@ cityContainer.addEventListener('click', async event => {
   }
   if (event.target.tagName === 'H2') {
     const searchValue = event.target.innerText;
-    const data = await getWeather(searchValue);
+    const data = await getWeather(searchValue).then(data => {
+      clearInterval(timerOnload);
+      timerOnload = setInterval(() => {
+        intervalTime(data.city.timezone);
+      }, 1000);
+
+      return data;
+    });
     updateWidget(data);
     const backgroundImage = await getCityImage(searchValue);
     addBackgroundImage(backgroundImage);
