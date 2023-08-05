@@ -1,11 +1,8 @@
 import { Chart } from "chart.js/auto";
 import moment from "moment";
 
-let labels = new Set();
-let temperature = [];
-let humidity = [];
-let windSpeed = [];
-let atmospherePressure = [];
+let chartInstance;
+
 
 const chartSection = document.querySelector('.chart-section');
 const ctx = document.querySelector('#myChart').getContext('2d');
@@ -23,6 +20,16 @@ const plugin = {
   };
 
 function createChart(data){
+    if (chartInstance){
+        chartInstance.destroy();
+    }
+
+    let labels = new Set();
+    let temperature = [];
+    let humidity = [];
+    let windSpeed = [];
+    let atmospherePressure = [];
+
     for (let i = 0; i < data.list.length; i++) {
         labels.add(moment(data.list[i].dt_txt).format('DD-MMM-YYYY'));
         temperature.push(Math.round(data.list[i].main.temp));
@@ -30,7 +37,7 @@ function createChart(data){
         windSpeed.push(Math.round(data.list[i].wind.speed));
         atmospherePressure.push(Math.round(data.list[i].main.pressure));
     }
-    new Chart(ctx, {
+    chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
             labels: [...labels],

@@ -112,6 +112,8 @@ cityContainer.addEventListener('click', async event => {
       timerOnload = setInterval(() => {
         intervalTime(data.city.timezone);
       }, 1000);
+
+      return data;
     });
     updateWidget(data);
     const backgroundImage = await getCityImage(searchValue);
