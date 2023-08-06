@@ -64,6 +64,8 @@ form.addEventListener('submit', async event => {
     intervalTime(data.city.timezone);
   }, 1000);
 
+  
+
 
   form.reset();
 });
