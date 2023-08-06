@@ -44,11 +44,11 @@ const renderFiveDaysWeather = data => {
 
     const tempMin = document.createElement('p');
     tempMin.className = 'days-list__value days-list__value--degrees';
-    tempMin.textContent = item.temp.TempMin;
+    tempMin.textContent = `${item.temp.TempMin}°`;
 
     const tempMax = document.createElement('p');
     tempMax.className = 'days-list__value days-list__value--degrees';
-    tempMax.textContent = item.temp.TempMax;
+    tempMax.textContent = `${item.temp.TempMax}°`;
 
     const minMaxDiv = document.createElement('div');
     minMaxDiv.className = 'days-list__min-max';
